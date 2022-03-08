@@ -35,14 +35,16 @@ const checkAuth = (req, res, next) => {
 
 // Index
 app.get('/', (req, res) => {
-    res.send("Velkommen til hydroponics API! - Lavet af: Jesper, Alexander & Jonas");
+    
+	res.send("Velkommen til hydroponics API! - Lavet af: Jesper, Alexander & Jonas");
 
-	console.log("Index");
 })
 
 // Brugt til at test API key ved requests
 app.get("/checkAuth", checkAuth, (req, res) => {
+	
 	res.json({message: "Hello world!"});
+
 })
 
 // Test af post
