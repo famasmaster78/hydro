@@ -1,24 +1,30 @@
 const express = require("express")
-const app = express()
-app.listen(3000)
+const bodyParser = require("body-parser");
 
-const mysql = require("mysql")
+const port = 3000;
+const app = express()
+
+// Initiate body parser
+app.use(bodyParser.urlencoded({ extended: true }))
+
+/* const mysql = require("mysql")
 
 const con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: ""
-});
+}); */
 
 app.get('/', (req, res) => {
-    res.send("test");
+    res.send("Velkommen til hydroponics API! - Lavet af: Jesper, Alexander & Jonas");
 })
 
-app.post('data', (req, res) => {
-    res.send("post send");
+app.post('/postTest', (req, res) => {
+
+	console.log("Modtaget post:", req.body);
+
+	res.send("Post successful!");
+
 })
 
-con.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-})
+app.listen(port, () => console.log(`App listening on port: ${port}`));
