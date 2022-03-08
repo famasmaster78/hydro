@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 
 app.post('data', (req, res) => {
     res.send("post send");
+    console.log("Data is collected");
 })
 
 con.connect(function(err) {
