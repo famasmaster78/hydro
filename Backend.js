@@ -10,13 +10,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
 
-/* const mysql = require("mysql")
+const mysql = require("mysql")
 
 const con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: ""
-}); */
+    host: "jbgaard.xyz",
+    user: "hydro-user",
+    password: "zW(]s6MXZ2@5.3uW",
+	database: "Hydroponics-AJJ",
+	timeout: 0,
+	connectTimeout: 0
+});
 
 // Funktion der tjekker om request indeholder korrekt API Key
 // Express middleWare
@@ -40,15 +43,8 @@ app.get('/', (req, res) => {
 
 })
 
-// Brugt til at test API key ved requests
-app.get("/checkAuth", checkAuth, (req, res) => {
-	
-	res.json({message: "Hello world!"});
-
-})
-
 // Test af post
-app.post('/postTest', (req, res) => {
+app.post('/hydroData', checkAuth, (req, res) => {
 
 	console.log( new Date().toLocaleTimeString(), "-", "Modtaget post:", req.body, req.ip);
 
