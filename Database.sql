@@ -1,4 +1,6 @@
 CREATE TABLE hydroData(
+	id INT(11) NOT NULL AUTO_INCREMENT,
+	deviceID VARCHAR(255) NOT NULL,
 	light VARCHAR(255),
 	temperature VARCHAR(255),
 	airQuality VARCHAR(255),

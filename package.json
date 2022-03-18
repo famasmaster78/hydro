@@ -5,7 +5,7 @@
   "main": "Backend.js",
   "scripts": {
     "dev": "nodemon Backend.js",
-	"start": "node"
+    "start": "node"
   },
   "keywords": [],
   "author": "",
@@ -13,8 +13,11 @@
   "dependencies": {
     "body-parser": "^1.19.2",
     "express": "^4.17.3",
+    "ip": "^1.1.5",
     "mysql": "^2.18.1",
-    "sql": "^0.78.0"
+    "mysql-promise": "^5.0.0",
+    "sql": "^0.78.0",
+    "sync-mysql": "^3.0.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
