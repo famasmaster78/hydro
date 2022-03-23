@@ -5,7 +5,11 @@
   "main": "Backend.js",
   "scripts": {
     "dev": "nodemon Backend.js",
-    "start": "node"
+    "start": "node .",
+	"docker-full": "yarn docker-build && yarn docker-tag && yarn docker-push",
+    "docker-build": "docker build -t famasmaster78/hydro-api .",
+    "docker-tag": "docker tag famasmaster78/hydro-api docker.jbgaard.xyz/hydro-api",
+    "docker-push": "docker push docker.jbgaard.xyz/hydro-api"
   },
   "keywords": [],
   "author": "",
