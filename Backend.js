@@ -1,5 +1,6 @@
 const express = require("express")
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const port = 3000;
 const app = express()
@@ -8,6 +9,7 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
+app.use(cors());
 
 // Promise baseret mysql
 var db = require('mysql-promise')();
@@ -46,7 +48,7 @@ const checkAuth = (req, res, next) => {
 	}
 
 	// Return fejl
-	return res.status(403).json({error: "Access denied!"});
+	return res.status(403).json({error: "Access denied! Invalid token"});
 
 }
 
@@ -60,9 +62,43 @@ app.get('/', (req, res) => {
 // Test af post
 app.post('/hydroData', checkAuth, (req, res) => {
 
-	console.log( new Date().toLocaleTimeString(), "-", "Modtaget post:", req.body, req.ip);
+	// Objekt der bliver sendt med response
+	let echo = {
+		success: false,
+		data: {},
+		errCode: 0,
+		errText: "",
+		status: []
+	}
 
-	res.json({message: "Post successful!"});
+	// console.log( new Date().toLocaleTimeString(), "-", "Modtaget post:", req.body, req.ip);
+
+	let receivedData = req.body;
+
+	// Upload data til DB
+	db.query("INSERT INTO HydroData (deviceID, light, temperature, humidity, liquidLV) VALUES (?, ?, ?, ?, ?)", [receivedData?.DeviceID, receivedData?.Lumination, receivedData?.Temperature, receivedData?.Humidity, receivedData.LiquidLV])
+	.then(res => {
+
+		// Opdater echo
+		echo.success = true;
+		echo.message = "Post successful!";
+
+	}).catch(err => {
+
+		console.error("Error uploading to DB", err);
+
+		// Opdater echo
+		echo.success = false;
+		echo.errText = err;
+		err.errCode = 400;
+		echo.message = "Error has occured!";
+
+	}).finally(() => {
+
+		// Send svar
+		res.json(echo);
+
+	})
 
 })
 
@@ -97,7 +133,7 @@ app.get("/getHydroData", checkAuth, (req, res) => {
 
 		for (device of devices) {
 
-			await db.query("SELECT * FROM HydroData where deviceID = ?", [device]).then(results => {
+			await db.query("SELECT * FROM HydroData where deviceID = ? LIMIT 25", [device]).then(results => {
 
 				// Opdaterer echo
 				echo.data.hydroData[device] = results[0];
