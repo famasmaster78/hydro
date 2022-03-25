@@ -133,7 +133,7 @@ app.get("/getHydroData", checkAuth, (req, res) => {
 
 		for (device of devices) {
 
-			await db.query("SELECT * FROM HydroData where deviceID = ? LIMIT 25", [device]).then(results => {
+			await db.query("SELECT * FROM HydroData where deviceID = ? ORDER BY dateCreated DESC LIMIT 25", [device]).then(results => {
 
 				// Opdaterer echo
 				echo.data.hydroData[device] = results[0];
@@ -141,6 +141,14 @@ app.get("/getHydroData", checkAuth, (req, res) => {
 			})
 
 		}
+
+	}).catch(err => {
+
+		// Opdater echo
+		echo.success = false;
+		echo.errText = err;
+		echo.errCode = 500;
+		echo.message = "Kunne ikke upload til DB";
 
 	}).finally(() => {
 
