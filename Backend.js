@@ -111,7 +111,8 @@ app.get("/getHydroData", checkAuth, (req, res) => {
 		data: {},
 		errCode: 0,
 		errText: "",
-		status: []
+		status: [],
+		message: ""
 	}
 
 	// Først finder vi de forskellige devices, herefter finder vi alle posterne der tilhører disse devices
@@ -141,6 +142,13 @@ app.get("/getHydroData", checkAuth, (req, res) => {
 			})
 
 		}
+
+		// Opdater echo
+		echo.success = true;
+		echo.message = "Post successful!";
+
+		console.log("HydroData updated!");
+		
 
 	}).catch(err => {
 
